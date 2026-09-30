@@ -1,0 +1,50 @@
+# Dependencias: NUNCA se suben al repositorio. Se instalan con npm install.
+node_modules/
+bower_components/
+.pnp/
+.pnp.js
+.yarn/cache/
+vendor/
+venv/
+.venv/
+__pycache__/
+*.pyc
+target/
+.gradle/
+
+# Salidas de build y cachés
+dist/
+build/
+out/
+coverage/
+.cache/
+.vite/
+.parcel-cache/
+.next/
+.angular/cache/
+.eslintcache
+*.tsbuildinfo
+.scannerwork/
+
+# Secretos y entorno
+.env
+.env.*
+!.env.example
+
+# Registros
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Editores y sistema
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+.DS_Store
+Thumbs.db
+
+# Soluciones del profesor: solo en local, nunca se suben.
+# La que se corrige en clase se copia a solucion/ cuando se publica.
+solucion-profesor/

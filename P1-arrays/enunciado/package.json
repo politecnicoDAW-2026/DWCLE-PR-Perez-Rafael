@@ -1,0 +1,58 @@
+{
+  "name": "dwcle-p1-arrays",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DWCLE · P1: practicar map, filter, reduce, every y some con tests.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:map": "vitest a_map",
+    "test:filter": "vitest b_filter",
+    "test:reduce": "vitest c_reduce",
+    "test:every": "vitest d_every",
+    "test:some": "vitest e_some",
+    "test:zoo": "vitest f_zoo",
+    "test:coverage": "vitest run --coverage",
+    "uml": "docker run --rm -v \"$PWD/docs/uml:/data\" plantuml/plantuml -tpng \"/data/*.puml\"",
+    "sonar:up": "docker compose -f apps/sonarqube/docker-compose.yml up -d",
+    "sonar:down": "docker compose -f apps/sonarqube/docker-compose.yml down",
+    "sonar:scan": "npm run test:coverage || echo \"Hay tests en rojo: se analiza igualmente\" && node --env-file-if-exists=.env node_modules/sonarqube-scanner/bin/sonar-scanner.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky || echo 'husky: no hay .git en esta carpeta, los hooks se instalan cuando el proyecto es la raíz del repositorio'",
+    "audit": "npm audit --audit-level=high",
+    "check": "npm run lint && npm run format:check && npm run test:coverage && npm run audit"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^5.0.1",
+    "eslint": "^10.10.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.12.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1",
+    "prettier": "^3.9.6",
+    "sonarqube-scanner": "^5.0.0",
+    "vitest": "^5.0.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,html,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "overrides": {
+    "adm-zip": "^0.6.1"
+  }
+}

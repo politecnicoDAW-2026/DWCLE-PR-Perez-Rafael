@@ -1,0 +1,53 @@
+' P1 · arrays: un módulo por bloque. Cada core.js exporta funciones puras y su core.spec.js las prueba.
+' Render: npm run uml (PlantUML en Docker) o la extensión PlantUML de VS Code.
+@startuml
+skinparam componentStyle rectangle
+left to right direction
+
+package "a_map" {
+  component "core.js" as map
+  note bottom of map
+    multiplyBy10, shiftRight,
+    onlyVowels, doubleMatrix
+  end note
+}
+package "b_filter" {
+  component "core.js" as filter
+  note bottom of filter
+    onlyEven, onlyOneWord,
+    positiveRowsOnly, allSameVowels
+  end note
+}
+package "c_reduce" {
+  component "core.js" as reduce
+  note bottom of reduce
+    sum, productAll,
+    objectify, luckyNumbers
+  end note
+}
+package "d_every" {
+  component "core.js" as every
+  note bottom of every
+    allEven, allSameType,
+    positiveMatrix, allSameVowels
+  end note
+}
+package "e_some" {
+  component "core.js" as some
+  note bottom of some
+    anyGreaterThan10, longWord,
+    truePossibilities, lostCarcosa
+  end note
+}
+package "f_zoo" {
+  component "core.js" as zoo
+  database "data.js" as data
+  zoo --> data : importa
+  note bottom of zoo
+    entryCalculator, schedule, animalCount, animalMap,
+    animalPopularity, animalsByIds, animalByName,
+    employeesByIds, employeeByName,
+    managersForEmployee, employeeCoverage
+  end note
+}
+@enduml
