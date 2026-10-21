@@ -1,0 +1,267 @@
+/* Estilos del formulario.
+   CSS sin dependencias: variables, :has() para los estados y modo oscuro automático. */
+
+:root {
+  /* Tipografía y espaciado */
+  --font-body: system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
+  --space: 1rem;
+  --radius: 0.5rem;
+
+  /* Color: claro por defecto */
+  --color-bg: #f1f5f9;
+  --color-surface: #fff;
+  --color-text: #0f172a;
+  --color-text-soft: #475569;
+  --color-border: #cbd5e1;
+  --color-disabled-text: #475569;
+  --color-accent: #2563eb;
+  --color-on-accent: #fff; /* contraste 5.17 sobre el acento claro */
+  --color-valid: #15803d;
+  --color-invalid: #b91c1c;
+  --color-valid-bg: #dcfce7;
+  --color-invalid-bg: #fee2e2;
+  --shadow: 0 1px 2px rgb(15 23 42 / 6%), 0 8px 24px rgb(15 23 42 / 8%);
+}
+
+/* Paleta oscura. Se aplica en dos casos:
+   1. el sistema la pide y el usuario no ha elegido "claro" a mano;
+   2. el usuario ha elegido "oscuro" a mano (data-theme en <html>).
+   El selector :not([data-theme='light']) es lo que hace que la elección manual gane. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-bg: #0f172a;
+    --color-surface: #1e293b;
+    --color-text: #e2e8f0;
+    --color-text-soft: #94a3b8;
+    --color-border: #475569;
+    --color-disabled-text: #cbd5e1;
+    --color-accent: #60a5fa;
+    --color-on-accent: #0f172a; /* blanco sobre #60a5fa da 2.54: no llega a AA */
+    --color-valid: #4ade80;
+    --color-invalid: #f87171;
+    --color-valid-bg: #14532d;
+    --color-invalid-bg: #450a0a;
+    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 8px 24px rgb(0 0 0 / 40%);
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #e2e8f0;
+  --color-text-soft: #94a3b8;
+  --color-border: #475569;
+  --color-disabled-text: #cbd5e1;
+  --color-accent: #60a5fa;
+  --color-on-accent: #0f172a; /* blanco sobre #60a5fa da 2.54: no llega a AA */
+  --color-valid: #4ade80;
+  --color-invalid: #f87171;
+  --color-valid-bg: #14532d;
+  --color-invalid-bg: #450a0a;
+  --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 8px 24px rgb(0 0 0 / 40%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: calc(var(--space) * 2) var(--space);
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.5;
+}
+
+main {
+  margin-inline: auto;
+  max-width: 34rem;
+}
+
+h1 {
+  margin: 0 0 var(--space);
+  font-size: 1.5rem;
+}
+
+/* --- El formulario --- */
+
+form {
+  padding: calc(var(--space) * 1.5);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow);
+}
+
+/* Idioma y país: en una fila mientras quepan */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space);
+  margin-bottom: var(--space);
+  padding-bottom: var(--space);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.field {
+  margin: 0 0 var(--space);
+}
+
+.options .field {
+  flex: 1 1 8rem; /* tres desplegables en una fila; se apilan cuando no caben */
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-soft);
+}
+
+/* La caja que agrupa el campo con su prefijo y su icono */
+.control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+/* :has() mira el icono que pone la vista y tiñe toda la caja */
+.control:has(.valid) {
+  border-color: var(--color-valid);
+}
+
+.control:has(.invalid) {
+  border-color: var(--color-invalid);
+}
+
+.control:has(input:focus-visible) {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+
+input,
+select {
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background: none;
+}
+
+/* Los desplegables no llevan .control: se pintan ellos */
+select {
+  padding: 0.6rem 0.75rem;
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+}
+
+input:focus,
+select:focus {
+  outline: none; /* el aro lo dibuja .control */
+}
+
+select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.prefix {
+  color: var(--color-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+/* El icono de validación: lo pone la vista cambiando su clase */
+.control i {
+  width: 1rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.control i.valid {
+  color: var(--color-valid);
+}
+
+.control i.invalid {
+  color: var(--color-invalid);
+}
+
+/* --- Botón --- */
+
+button {
+  width: 100%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-on-accent);
+  background-color: var(--color-accent);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+/* Deshabilitado: color propio en vez de opacidad, que deja el texto ilegible */
+button:disabled {
+  color: var(--color-disabled-text);
+  background-color: var(--color-border);
+  cursor: not-allowed;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+/* Va el último: es el de mayor especificidad (0,2,1) */
+button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* --- Mensaje del envío --- */
+
+.message {
+  display: block; /* <output> es inline por defecto */
+  margin: var(--space) 0 0;
+  padding: 0; /* sin texto no ocupa ni se ve */
+  border-radius: var(--radius);
+}
+
+.message:not(:empty) {
+  padding: 0.75rem var(--space);
+}
+
+.message.success {
+  color: var(--color-valid);
+  background-color: var(--color-valid-bg);
+}
+
+.message.error {
+  color: var(--color-invalid);
+  background-color: var(--color-invalid-bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none;
+  }
+}
+
+/* El selector de tema lo rellena theme.js; oculto hasta entonces para que no parpadee */
+.theme-switcher[hidden] {
+  display: none;
+}

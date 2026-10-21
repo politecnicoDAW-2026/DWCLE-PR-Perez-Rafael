@@ -1,0 +1,125 @@
+' Diagrama FINAL de la P2 (MVP). Regenerar el PNG con `npm run uml` (Docker) o con la
+' extensión PlantUML de VS Code (Alt+D abre la vista previa).
+@startuml class-diagram
+
+package domain {
+
+  class User {
+    - name: string
+    - surname: string
+    - birthDate: Date
+    - telephone: Telephone
+    - address: UserAddress
+    - country: Country
+    + isComplete: boolean
+    + dateFormat: string
+    + toString(): string
+  }
+  note right of User
+    Todos los setters validan y lanzan ValidationError.
+    El constructor admite datos parciales: se valida campo a campo.
+    birthDate se guarda como Date y se devuelve con el formato del país.
+    telephone y address aceptan la cadena suelta o el modelo ya construido.
+  end note
+
+  class Telephone {
+    - number: string
+    - country: Country
+    + prefix: string
+    + toString(): string
+  }
+  note right of Telephone
+    Si el país admite letras (allowsLetters), se traducen con el
+    teclado del teléfono ANTES de validar el patrón del país.
+  end note
+
+  class UserAddress {
+    - zip: string
+    - address: string
+    - country: Country
+    + isComplete: boolean
+    + toString(): string
+  }
+
+  ' Se dan hechos en country.model.js: objetos constantes, no clases
+  entity Country <<const>> {
+    code, name, prefix
+    dateFormat
+    phoneExample, allowsLetters
+    zipPattern, zipExample, phonePattern
+  }
+
+  entity Language <<const>> {
+    code, name
+  }
+
+  ' Se da hecha en exceptions/: la lanzan los setters del modelo y el servicio
+  class ValidationError extends Error {
+    + field: string
+  }
+
+  class FormService {
+    - data: object
+    - country: Country
+    + set(property, value): void
+    + isValid(property): boolean
+    + isFormValid: boolean
+    + sendForm(): User
+    + setCountry(code): void
+  }
+  note right of FormService
+    Traduce la excepción del modelo a un booleano para la vista.
+    Solo un ValidationError significa "campo inválido"; cualquier
+    otro error se relanza para no disfrazar un bug.
+    sendForm() devuelve un User o lanza ValidationError('form').
+  end note
+
+  ValidationError <.. FormService : captura
+  User *-- Telephone
+  User *-- UserAddress
+  Telephone o-- Country
+  UserAddress o-- Country
+  User ..> Country
+  FormService ..> Country
+  FormService "1" o-- "1" User
+}
+
+package view {
+
+  class FormView {
+    - fields: Map<string, {input, icon}>
+    - touched: Set<string>
+    - language: string
+    + bindFieldInput(handler): void
+    + bindLanguageChange(handler): void
+    + bindCountryChange(handler): void
+    + bindSubmit(handler): void
+    + renderField(property, isValid): void
+    + enableSubmit(isEnabled): void
+    + setLanguage(code): void
+    + setCountry(country): void
+    + showSuccess(user): void
+    + showError(): void
+    + clearMessage(): void
+  }
+  note right of FormView
+    Lo ÚNICO que toca el DOM. No valida: recibe true/false.
+    El icono es el hermano siguiente del input (nextElementSibling)
+    y solo se pinta si el campo ya se ha tocado.
+  end note
+
+  class FormController {
+    - service: FormService
+    - view: FormView
+    + handleFieldInput(property, value)
+    + handleLanguageChange(code)
+    + handleCountryChange(code)
+    + handleSubmit()
+  }
+}
+
+FormController o-- FormService
+FormController o-- FormView
+FormView ..> Language : usa los diccionarios i18n
+
+@enduml

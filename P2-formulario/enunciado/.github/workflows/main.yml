@@ -1,0 +1,25 @@
+name: Dibujar diagramas UML
+
+# Cada vez que cambia un .puml se regenera su .png y se sube al repositorio
+on:
+  push:
+    paths:
+      - 'docs/uml/**.puml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagrams:
+    name: PlantUML a PNG
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Renderizar diagramas
+        run: docker run --rm -v "${{ github.workspace }}/docs/uml:/data" plantuml/plantuml -tpng "/data/*.puml"
+      - name: Subir los PNG generados
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'docs(uml): regenerar diagramas'
+          file_pattern: 'docs/uml/*.png'

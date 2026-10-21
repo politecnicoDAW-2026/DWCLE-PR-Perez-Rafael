@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>P2 · Formulario</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script>
+      // Se ejecuta antes de pintar para que no parpadee: lee la preferencia guardada
+      // y la aplica. El resto del selector de tema vive en theme.js.
+      try {
+        const theme = localStorage.getItem('dwcle-p2-theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+      } catch {
+        /* sin almacenamiento: manda el sistema operativo */
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1 data-i18n="title">Datos personales</h1>
+
+      <form id="user-form" novalidate>
+        <div class="options">
+          <p class="field">
+            <label for="language" data-i18n="language">Idioma</label>
+            <select id="language">
+              <option value="es">Español</option>
+              <option value="en">English</option>
+            </select>
+          </p>
+          <p class="field">
+            <label for="country" data-i18n="country">País</label>
+            <select id="country">
+              <option value="ES">España</option>
+              <option value="US">Estados Unidos</option>
+            </select>
+          </p>
+          <!-- Tema: lo gestiona theme.js, no forma parte de la práctica -->
+          <p class="field theme-switcher" hidden>
+            <label for="theme">Tema</label>
+            <select id="theme">
+              <option value="system">Sistema</option>
+              <option value="light">Claro</option>
+              <option value="dark">Oscuro</option>
+            </select>
+          </p>
+        </div>
+
+        <p class="field">
+          <label for="name" data-i18n="name">Nombre</label>
+          <span class="control">
+            <input id="name" type="text" maxlength="100" autocomplete="given-name" />
+            <i aria-hidden="true"></i>
+          </span>
+        </p>
+
+        <p class="field">
+          <label for="surname" data-i18n="surname">Apellidos</label>
+          <span class="control">
+            <input id="surname" type="text" maxlength="100" autocomplete="family-name" />
+            <i aria-hidden="true"></i>
+          </span>
+        </p>
+
+        <p class="field">
+          <label for="birthDate" data-i18n="birthDate">Fecha de nacimiento</label>
+          <span class="control">
+            <input id="birthDate" type="text" placeholder="dd/MM/yyyy" inputmode="numeric" />
+            <i aria-hidden="true"></i>
+          </span>
+        </p>
+
+        <p class="field">
+          <label for="telephone" data-i18n="telephone">Teléfono</label>
+          <span class="control">
+            <span id="prefix" class="prefix">+34</span>
+            <input id="telephone" type="tel" maxlength="10" />
+            <i aria-hidden="true"></i>
+          </span>
+        </p>
+
+        <p class="field">
+          <label for="zip" data-i18n="zip">Código postal</label>
+          <span class="control">
+            <input id="zip" type="text" maxlength="6" autocomplete="postal-code" />
+            <i aria-hidden="true"></i>
+          </span>
+        </p>
+
+        <p class="field">
+          <label for="address" data-i18n="address">Dirección</label>
+          <span class="control">
+            <input id="address" type="text" maxlength="200" autocomplete="address-line1" />
+            <i aria-hidden="true"></i>
+          </span>
+        </p>
+
+        <button id="submit" type="submit" disabled>Enviar</button>
+      </form>
+
+      <!-- <output> es el elemento del resultado de un formulario: ya es role="status" -->
+      <output id="message" class="message"></output>
+    </main>
+
+    <script type="module" src="./theme.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

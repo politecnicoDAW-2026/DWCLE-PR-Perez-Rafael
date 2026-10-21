@@ -1,0 +1,14 @@
+{
+  "title": "Personal data",
+  "language": "Language",
+  "country": "Country",
+  "name": "Name",
+  "surname": "Surname",
+  "birthDate": "Birthdate",
+  "telephone": "Phone number",
+  "zip": "Zip code",
+  "address": "Address",
+  "submit": "Send",
+  "sent": "Data sent",
+  "error": "Could not send: check the fields"
+}

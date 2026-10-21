@@ -1,0 +1,14 @@
+{
+  "title": "Datos personales",
+  "language": "Idioma",
+  "country": "País",
+  "name": "Nombre",
+  "surname": "Apellidos",
+  "birthDate": "Fecha de nacimiento",
+  "telephone": "Teléfono",
+  "zip": "Código postal",
+  "address": "Dirección",
+  "submit": "Enviar",
+  "sent": "Datos enviados",
+  "error": "No se pudo enviar: revisa los campos"
+}

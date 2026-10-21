@@ -1,0 +1,70 @@
+{
+  "name": "dwcle-p2-formulario",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DWCLE \u00b7 P2: formulario con Modelo-Vista-Presentador en JavaScript.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "uml": "docker run --rm -v \"$PWD/docs/uml:/data\" plantuml/plantuml -tpng \"/data/*.puml\"",
+    "sonar:up": "docker compose -f apps/sonarqube/docker-compose.yml up -d",
+    "sonar:down": "docker compose -f apps/sonarqube/docker-compose.yml down",
+    "sonar:scan": "npm run test:coverage || echo \"Hay tests en rojo: se analiza igualmente\" && node --env-file-if-exists=.env node_modules/sonarqube-scanner/bin/sonar-scanner.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint:css:fix": "stylelint \"src/**/*.css\" --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky || echo 'husky: no hay .git en esta carpeta, los hooks se instalan cuando el proyecto es la ra\u00edz del repositorio'",
+    "audit": "npm audit --audit-level=high",
+    "check": "npm run lint && npm run lint:css && npm run format:check && npm run test:coverage && npm run audit"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.3.1",
+    "date-fns": "^4.4.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^5.0.1",
+    "axe-core": "^4.13.0",
+    "eslint": "^10.10.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.12.0",
+    "husky": "^9.1.7",
+    "jsdom": "^30.1.0",
+    "lint-staged": "^17.5.1",
+    "prettier": "^3.9.6",
+    "sonarqube-scanner": "^5.0.0",
+    "stylelint": "^17.15.0",
+    "stylelint-config-standard": "^40.0.0",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,html,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.css": [
+      "stylelint --fix",
+      "prettier --write"
+    ]
+  },
+  "overrides": {
+    "adm-zip": "^0.6.1"
+  }
+}
